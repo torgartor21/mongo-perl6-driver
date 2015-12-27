@@ -8,7 +8,7 @@
     connection.buildinfo()              Server info
 }}
 
-BEGIN { @*INC.unshift( './t' ) }
+use lib 't';
 use Test-support;
 
 use v6;
@@ -30,7 +30,7 @@ subtest {
      "Connection isa {$connection.^name}";
 
   is $connection.status.^name,
-     'X::MongoDB',
+     'MongoDB::X::MongoDB',
      "1 Status isa {$connection.status.^name}";
 
   ok $connection.status ~~ X::MongoDB,

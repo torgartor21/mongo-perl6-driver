@@ -4,13 +4,13 @@
     collection.map-reduce()             Map reduce
 }}
 
-BEGIN { @*INC.unshift( './t' ) }
+use lib 't';
 use Test-support;
 
 use v6;
 use Test;
 use MongoDB::Connection;
-use BSON::Javascript;
+use BSON::Javascript-old;
 
 #-------------------------------------------------------------------------------
 my MongoDB::Connection $connection = get-connection();

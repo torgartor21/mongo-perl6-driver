@@ -1,8 +1,6 @@
 use v6;
 
-#BEGIN {
-#  @*INC.unshift('/home/marcel/Languages/Perl6/Projects/BSON/lib');
-#}
+# use lib '/home/marcel/Languages/Perl6/Projects/BSON/lib';
 
 use MongoDB;
 use MongoDB::Database;
@@ -12,7 +10,7 @@ package MongoDB {
 
   #-----------------------------------------------------------------------------
   #
-  class MongoDB::Connection {
+  class Connection {
 
     has IO::Socket::INET $!sock;
     has Exception $.status = Nil;

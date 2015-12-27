@@ -1,3 +1,5 @@
+use v6;
+
 #`{{
   Setup sandbox
   Generate mongo config
@@ -5,8 +7,10 @@
   Test connection
 }}
 
-BEGIN { @*INC.unshift( './t' ) }
+use lib 't';
 use Test-support;
+use MongoDB::Connection;
+use Test;
 
 #-------------------------------------------------------------------------------
 # Skip sandbox setup if requested
@@ -57,11 +61,7 @@ elsif $*KERNEL.name eq 'win32' {
 
 #-------------------------------------------------------------------------------
 #
-use v6;
-use MongoDB::Connection;
-use Test;
-
-note "\n\nSetting up involves initializing mongodb data files which takes time";
+diag "\n\nSetting up involves initializing mongodb data files which takes time";
 
 #-------------------------------------------------------------------------------
 # Check directory Sandbox

@@ -51,7 +51,7 @@ Perl 6 randomizes key order you never know what the order is.
 * Experiments are done using arrays of pairs to keep the order the same as
 entered. This works but it is cumbersome. In the mean time thoughts about how to
 implement parallel encoding to and decoding from BSON byte strings have been
-past my mind. These thoughts are crystalized into a Document module in the BSON
+past my mind. These thoughts are crystalized into a Document class in the BSON
 package which a) keeps the order, 2) have the same capabilities as Hashes, 3)
 can do encoding and decoding in parallel. This BSON::Document will probably be
 implemented in the coming (sub)versions of this package after complete testing
@@ -119,14 +119,9 @@ $ panda install MongoDB
 
 ## Versions of PERL, MOARVM and MongoDB
 perl6 version 2015.10-70-gba70274 built on MoarVM version 2015.10-14-g5ff3001
-* Perl6 version ```2015.10-206-gca7ed86```
-* MoarVM version ```2015.10-56-g9fd3005```
+* Perl6 version ```2015.11-143-g7046681```
+* MoarVM version ```2015.11-19-g623eadf```
 * MongoDB version ```3.0.5```
-
-Maybe we also need to test other versions of mongodb such as 2.6.* and provide
-functionality for it. This will make it a bit slower caused by tests on version
-and act on it but it is not on all methods nessesary.
-
 
 ## FEATURE CHECKLIST FOR MONGODB DRIVERS
 
@@ -432,6 +427,28 @@ Although the lists above represent one hell of a todo, below are a few notes
 which I have to make to remember to add items to programmed functions. There
 are also items to be implemented in BSON. You need to look there for info
 
+Maybe we also need to test other versions of mongodb such as 2.6.* and provide
+functionality for it. This will make it a bit slower caused by tests on version
+and act on it but it is not nessesary to test in all methods.
+
+Mongo will also stop supporting versions lower than 2.6 in 2016 so this driver
+will not support lower versions either.
+
+One of the newer ways of sending commands to the server is by using database
+commands (Already implemented since version 2.6). I didn't realize that this can
+replace a big part of the wire protocol module. So one of the consequences are
+the rewrite of that module and the others depending on it. Mostly it comes down
+to fleshing out code because when one knows how to send commands to the server
+there is no need for many of the command helpers from the list above. I will
+turn this list into a testing checklist for the most part of the list.
+
+BSON has some changes too. A module BSON::Document is created to implement a
+hash like behavior while keeping the input order of key-values. This will also
+be implemented.
+
+* Blog [A Consistent CRUD API](https://www.mongodb.com/blog/post/consistent-crud-api-next-generation-mongodb-drivers?jmp=docs&_ga=1.72964115.1411139568.1420476116)
+* Blog [Server Discovery and Monitoring](https://www.mongodb.com/blog/post/server-discovery-and-monitoring-next-generation-mongodb-drivers?jmp=docs&_ga=1.148010423.1411139568.1420476116)
+* Blog [Server Selection](https://www.mongodb.com/blog/post/server-selection-next-generation-mongodb-drivers?jmp=docs&_ga=1.107199874.1411139568.1420476116)
 * Following [priority recomendations](http://docs.mongodb.org/meta-driver/latest/legacy/mongodb-driver-requirements/) from the mongodb site about writing drivers.
 * Speed, protocol correctness and clear code are priorities for now.
   * Speed can be influenced by specifying types on all variables
@@ -498,6 +515,10 @@ change at any time. The public API should not be considered stable.*
 * 0.*.0
   * Remove deprecation messages of converted method names
 
+* 0.25.12
+  * Changes in Wire.pm6 using lower case method names. I find the use of uppercase
+    method names only when called by perl6 (e.g. FALLBACK, BUILD). Other use of
+    uppercase words only with constants.
 * 0.25.11
   * Changes caused by changes in BSON
 * 0.25.10

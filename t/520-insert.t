@@ -4,14 +4,14 @@
 
 use v6;
 
-BEGIN { @*INC.unshift( './t' ); }
+use lib 't';
 use Test-support;
 
 use Test;
 use MongoDB::Connection;
 use UUID;
 use Digest::MD5;
-use BSON::Binary;
+use BSON::Binary-old;
 
 #-------------------------------------------------------------------------------
 my MongoDB::Connection $connection = get-connection();
@@ -23,14 +23,15 @@ $database.drop;
 my MongoDB::Collection $collection = $database.collection('cl1');
 my BSON::Binary $gen-bin .= new(data => Buf.new(12 .. 20));
 
+my UUID $uuid .= new(:version(4));
 my BSON::Binary $uuid-bin .= new(
-  data => UUID.new(:version(4)).Blob,
-  type => $BSON::UUID
+  :data($uuid.Blob),
+  :type(BSON::C-UUID)
 );
 
 my BSON::Binary $md5-bin .= new(
   data => Digest::MD5.md5_buf('some text'),
-  type => $BSON::MD5
+  type => BSON::C-MD5
 );
 
 subtest {
